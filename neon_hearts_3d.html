@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title></title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020204}
+body{background:radial-gradient(ellipse at 50% 48%,#202027 0%,#09090d 42%,#010102 100%)}
+.stage{height:100%;width:100%;position:relative;display:grid;place-items:center;isolation:isolate;overflow:hidden}
+.stage:before{content:"";position:absolute;inset:-40%;background:repeating-radial-gradient(ellipse at 50% 50%,transparent 0 65px,#ffffff0c 66px 67px,transparent 68px 130px);transform:perspective(500px) rotateX(68deg) translateY(22%);animation:spin 60s linear infinite}
+.stage:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,#0008 72%,#000 100%);pointer-events:none}
+.heart-wrap{position:relative;width:min(72vw,470px);aspect-ratio:1;display:grid;place-items:center;transform-style:preserve-3d;animation:levitate 5s ease-in-out infinite;z-index:2}
+.heart-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 10px #fff9) drop-shadow(0 0 28px #d8d8ff88) drop-shadow(0 25px 30px #000)}
+.heart-shape{transform-origin:250px 250px;animation:pulse 3.4s ease-in-out infinite}
+.halo{position:absolute;width:72%;height:72%;border:1px solid #ffffff80;border-radius:50%;box-shadow:0 0 25px #fff5,inset 0 0 24px #fff2;transform:rotateX(70deg);animation:halo 9s linear infinite}
+.halo.h2{width:94%;height:94%;transform:rotateX(70deg) rotateZ(65deg);animation-direction:reverse;opacity:.55}
+.halo.h3{width:112%;height:112%;transform:rotateY(70deg) rotateZ(20deg);opacity:.28;animation-duration:14s}
+.spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px #fff;left:var(--x);top:var(--y);animation:twinkle var(--t) ease-in-out infinite}
+.tiny{position:absolute;width:var(--w);height:var(--w);left:var(--x);top:var(--y);filter:drop-shadow(0 0 8px #fff);animation:drift var(--t) ease-in-out infinite alternate;opacity:.8}
+@keyframes pulse{0%,100%{transform:scale(.96) rotateY(-5deg)}50%{transform:scale(1.035) rotateY(5deg)}}
+@keyframes levitate{0%,100%{translate:0 8px;rotate:-2deg}50%{translate:0 -15px;rotate:2deg}}
+@keyframes halo{to{rotate:360deg}}
+@keyframes spin{to{rotate:360deg}}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.5)}50%{opacity:1;transform:scale(1.8)}}
+@keyframes drift{from{translate:0 12px;rotate:-12deg}to{translate:0 -28px;rotate:15deg}}
+@media(max-width:600px){.heart-wrap{width:min(88vw,420px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
+</style>
+</head>
+<body>
+<main class="stage" aria-hidden="true">
+ <div class="halo"></div><div class="halo h2"></div><div class="halo h3"></div>
+ <div class="heart-wrap">
+  <svg class="heart-svg" viewBox="0 0 500 500" role="img" aria-label="">
+   <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+     <stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#d8d8df"/>
+     <stop offset=".42" stop-color="#777780"/><stop offset=".68" stop-color="#292930"/>
+     <stop offset="1" stop-color="#050507"/>
+    </linearGradient>
+    <linearGradient id="left" x1="0" y1="0" x2="1" y2="1">
+     <stop stop-color="#fff"/><stop offset=".48" stop-color="#aeb0bb"/><stop offset="1" stop-color="#34343d"/>
+    </linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="1" y2="1">
+     <stop stop-color="#d5d5dd"/><stop offset=".45" stop-color="#555560"/><stop offset="1" stop-color="#08080b"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0.8" y2="1">
+     <stop stop-color="#fff" stop-opacity=".95"/><stop offset=".38" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="shadow"><feGaussianBlur stdDeviation="13"/></filter>
+   </defs>
+   <g class="heart-shape">
+    <!-- soft cast shadow -->
+    <path d="M250 420 C205 375 65 267 65 164 C65 91 119 48 181 54 C218 57 241 79 250 105 C267 69 300 52 340 55 C404 60 439 108 433 174 C425 265 300 377 250 420Z" fill="#000" opacity=".9" transform="translate(0 22)" filter="url(#shadow)"/>
+    <!-- sculpted main silhouette -->
+    <path d="M250 414 C204 370 65 265 65 164 C65 91 119 48 181 54 C218 57 241 79 250 105 C267 69 300 52 340 55 C404 60 439 108 433 174 C425 265 300 377 250 414Z" fill="url(#body)" stroke="#fff" stroke-width="3"/>
+    <!-- dimensional facets -->
+    <path d="M250 105 C241 79 218 57 181 54 C119 48 65 91 65 164 C65 252 164 339 250 414Z" fill="url(#left)" opacity=".9"/>
+    <path d="M250 105 C267 69 300 52 340 55 C404 60 439 108 433 174 C425 265 300 377 250 414Z" fill="url(#right)" opacity=".9"/>
+    <path d="M250 105 C220 140 191 182 174 228 C204 257 226 292 250 414 C270 293 310 233 351 192 C326 153 290 121 250 105Z" fill="#17171d" opacity=".55"/>
+    <path d="M250 105 C224 137 205 172 192 207 C215 227 235 259 250 414 C265 270 286 223 316 184 C298 148 275 122 250 105Z" fill="url(#shine)" opacity=".7"/>
+    <path d="M83 157 C88 102 128 72 177 77 C205 80 224 96 237 120" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".72" filter="url(#soft)"/>
+    <path d="M83 157 C88 102 128 72 177 77 C205 80 224 96 237 120" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+    <path d="M267 91 C292 69 328 67 359 79" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+    <path d="M103 203 C132 282 205 347 244 389" fill="none" stroke="#fff" stroke-width="1.5" opacity=".28"/>
+    <path d="M399 205 C372 278 308 344 260 392" fill="none" stroke="#fff" stroke-width="1.5" opacity=".22"/>
+    <path d="M250 105 L192 207 L250 414 L316 184Z" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="1.2"/>
+   </g>
+  </svg>
+ </div>
+ <div class="tiny" style="--w:22px;--x:17%;--y:24%;--t:5s">
+  <svg viewBox="0 0 100 90"><path d="M50 84 C40 73 5 48 5 28 C5 4 35 -2 50 19 C65 -2 95 4 95 28 C95 48 60 73 50 84Z" fill="none" stroke="white" stroke-width="4"/></svg>
+ </div>
+ <div class="tiny" style="--w:15px;--x:79%;--y:25%;--t:6s">
+  <svg viewBox="0 0 100 90"><path d="M50 84 C40 73 5 48 5 28 C5 4 35 -2 50 19 C65 -2 95 4 95 28 C95 48 60 73 50 84Z" fill="none" stroke="white" stroke-width="5"/></svg>
+ </div>
+ <div class="tiny" style="--w:28px;--x:82%;--y:72%;--t:7s">
+  <svg viewBox="0 0 100 90"><path d="M50 84 C40 73 5 48 5 28 C5 4 35 -2 50 19 C65 -2 95 4 95 28 C95 48 60 73 50 84Z" fill="none" stroke="white" stroke-width="4"/></svg>
+ </div>
+ <div class="tiny" style="--w:17px;--x:13%;--y:70%;--t:5.5s">
+  <svg viewBox="0 0 100 90"><path d="M50 84 C40 73 5 48 5 28 C5 4 35 -2 50 19 C65 -2 95 4 95 28 C95 48 60 73 50 84Z" fill="none" stroke="white" stroke-width="5"/></svg>
+ </div>
+ <i class="spark" style="--x:25%;--y:18%;--t:2.4s"></i><i class="spark" style="--x:72%;--y:35%;--t:3.1s"></i>
+ <i class="spark" style="--x:18%;--y:57%;--t:2s"></i><i class="spark" style="--x:88%;--y:53%;--t:2.8s"></i>
+ <i class="spark" style="--x:47%;--y:12%;--t:3.4s"></i><i class="spark" style="--x:55%;--y:88%;--t:2.2s"></i>
+ <i class="spark" style="--x:8%;--y:42%;--t:3s"></i><i class="spark" style="--x:93%;--y:81%;--t:2.5s"></i>
+</main>
+</body>
+</html>
